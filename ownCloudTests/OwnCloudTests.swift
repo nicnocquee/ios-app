@@ -39,15 +39,15 @@ class OwnCloudTests: XCTestCase {
     func testCorrectURLShowFields() {
         
         EarlGrey.select(elementWithMatcher: grey_accessibilityID("addServer")).perform(grey_tap())
-        EarlGrey.select(elementWithMatcher: grey_accessibilityID("server-url-textfield")).perform(grey_replaceText(demoServer))
-        EarlGrey.select(elementWithMatcher: grey_accessibilityID("continue-button-row")).perform(grey_tap())
+        EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-url-url")).perform(grey_replaceText(demoServer))
+        EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-continue-continue")).perform(grey_tap())
         
         //Asserts
-    
-        EarlGrey.select(elementWithMatcher: grey_accessibilityID("server-name-textfield")).assert(grey_sufficientlyVisible())
-        EarlGrey.select(elementWithMatcher: grey_accessibilityID("passphrase-username-textfield-row")).assert(grey_sufficientlyVisible())
-        EarlGrey.select(elementWithMatcher: grey_accessibilityID("passphrase-password-textfield-row")).assert(grey_sufficientlyVisible())
-        EarlGrey.select(elementWithMatcher: grey_accessibilityID("certificate-details-button")).assert(grey_sufficientlyVisible())
+        
+        EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-name-name")).assert(grey_sufficientlyVisible())
+        EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-credentials-username")).assert(grey_sufficientlyVisible())
+        EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-credentials-password")).assert(grey_sufficientlyVisible())
+        EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-url-certificate")).assert(grey_sufficientlyVisible())
         
     }
 
