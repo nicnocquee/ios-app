@@ -14,44 +14,68 @@ import EarlGrey
 class OwnCloudTests: XCTestCase {
     
     let demoServer: String = "demo.owncloud.org"
-
+    
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-
+    
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-
+    
     /*
      * Passed if: "Add Server" button is enabled
      */
-    func testAddServerButtonIsEnabled() {
+    func test1AddServerButtonIsEnabled() {
         EarlGrey.select(elementWithMatcher: grey_accessibilityID("addServer")).assert(with: grey_enabled())
     }
-
+    
+    /*
+     * Passed if: Empty URL error shows correct message
+     */
+    func test2EmptyURL() {
+        EarlGrey.select(elementWithMatcher: grey_accessibilityID("addServer")).perform(grey_tap())
+        EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-continue-continue")).perform(grey_tap())
+        
+        //Asserts
+        
+        EarlGrey.select(elementWithMatcher: grey_text("Missing hostname")).assert(grey_sufficientlyVisible())
+        EarlGrey.select(elementWithMatcher: grey_text("OK")).perform(grey_tap())
+    }
+    
+    /*
+     * Passed if: Wrong URL error shows correct message
+     */
+    func test3WrongURL() {
+        
+        EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-url-url")).perform(grey_replaceText("WrongURL"))
+        EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-continue-continue")).perform(grey_tap())
+        
+        //Asserts
+        
+        EarlGrey.select(elementWithMatcher: grey_text("OK")).perform(grey_tap())
+    }
+    
     /*
      * Passed if: Credentials: username, password, server name, and certificate are displayed if connection works to basic auth server
      */
     
-    func testCorrectURLShowFields() {
+    func test4CorrectURLShowFields() {
         
-        EarlGrey.select(elementWithMatcher: grey_accessibilityID("addServer")).perform(grey_tap())
         EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-url-url")).perform(grey_replaceText(demoServer))
         EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-continue-continue")).perform(grey_tap())
         
         //Asserts
         
-        EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-name-name")).assert(grey_sufficientlyVisible())
         EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-credentials-username")).assert(grey_sufficientlyVisible())
         EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-credentials-password")).assert(grey_sufficientlyVisible())
         EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-url-certificate")).assert(grey_sufficientlyVisible())
         
     }
-
-    func testPerformanceExample() {
+    
+    func test5PerformanceExample() {
         // This is an example of a performance test case.
         self.measure {
             // Put the code you want to measure the time of here.
