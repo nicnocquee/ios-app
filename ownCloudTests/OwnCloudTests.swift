@@ -62,25 +62,10 @@ class OwnCloudTests: XCTestCase {
     }
     
     /*
-     * Passed if: URL with no preffix under http shows SSL connection error
-     */
-    func test4BadProtocol() {
-        
-        EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-url-url")).perform(grey_replaceText(""))
-        EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-continue-continue")).perform(grey_tap())
-        
-        //Asserts
-        
-        EarlGrey.select(elementWithMatcher: grey_text("An SSL error has occurred and a secure connection to the server cannot be made.")).assert(grey_sufficientlyVisible())
-        EarlGrey.select(elementWithMatcher: grey_text("OK")).perform(grey_tap())
-    }
-    
-    
-    /*
      * Passed if: Credentials: username, password, server name, and certificate are displayed if connection works to basic auth server
      */
     
-    func test5CorrectURLShowFields() {
+    func test4CorrectURLShowFields() {
         
         EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-url-url")).perform(grey_replaceText(demoServer))
         EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-continue-continue")).perform(grey_tap())
@@ -93,11 +78,10 @@ class OwnCloudTests: XCTestCase {
         
     }
     
-    
     /*
      * Passed if: Username and password hints are visible (we remain in the same view)
      */
-    func test6EmptyCredentials() {
+    func test5EmptyCredentials() {
         
         EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-continue-continue")).perform(grey_tap())
         
@@ -111,7 +95,7 @@ class OwnCloudTests: XCTestCase {
     /*
      * Passed if: Username and password hints are visible (user remains in the same view because credentials error)
      */
-    func test7CorrectLogin() {
+    func test6CorrectLogin() {
         
         EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-name-name")).perform(grey_replaceText(nameServer))
         EarlGrey.select(elementWithMatcher: grey_accessibilityID("row-credentials-username")).perform(grey_replaceText(username))
@@ -129,7 +113,7 @@ class OwnCloudTests: XCTestCase {
     /*
      * Passed if: Bookmark is not deleted after cancelling the confirmation
      */
-    func test8CancelDeleteBookmark() {
+    func test7CancelDeleteBookmark() {
         
         EarlGrey.select(elementWithMatcher: grey_text(nameServer)).perform(grey_swipeFastInDirection(GREYDirection.left))
         EarlGrey.select(elementWithMatcher: grey_text("Delete")).perform(grey_tap())
@@ -144,7 +128,7 @@ class OwnCloudTests: XCTestCase {
     /*
      * Passed if: Bookmark is deleted, so welcome view to add server is displayed with the "Add Button" enabled
      */
-    func test9DeleteBookmark() {
+    func test8DeleteBookmark() {
         
         EarlGrey.select(elementWithMatcher: grey_text(nameServer)).perform(grey_swipeFastInDirection(GREYDirection.left))
         EarlGrey.select(elementWithMatcher: grey_text("Delete")).perform(grey_tap())
@@ -156,7 +140,7 @@ class OwnCloudTests: XCTestCase {
         
     }
     
-    func test10PerformanceExample() {
+    func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {
             // Put the code you want to measure the time of here.
