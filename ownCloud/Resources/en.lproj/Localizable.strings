@@ -137,12 +137,11 @@
 "Forbidden Characters" = "Forbidden Characters";
 "File name cannot contain / or \\" = "File name cannot contain / or \\";
 
-<<<<<<< HEAD
 "New Folder" = "New Folder";
 "Rename" =" Rename";
 "Create folder" =" Create folder";
-=======
+"Duplicate" = "Duplicate";
+"Move" = "Move";
 
 /* Directory Picker Messages */
 "Move Here" = "Move Here";
->>>>>>> 47d0e33... - Localize 'Move Here' message
