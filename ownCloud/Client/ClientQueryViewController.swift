@@ -18,15 +18,21 @@
 
 import UIKit
 import ownCloudSDK
+import QuickLook
+import ObjectiveC
 
 typealias ClientActionVieDidAppearHandler = () -> Void
 typealias ClientActionCompletionHandler = (_ actionPerformed: Bool) -> Void
 
 class ClientQueryViewController: UITableViewController, Themeable {
+
+	static var kSomeKey = "s"
 	var core : OCCore?
 	var query : OCQuery?
 
 	var items : [OCItem]?
+
+	var selectedItem: OCItem?
 
 	var queryProgressSummary : ProgressSummary? {
 		willSet {
@@ -275,6 +281,19 @@ class ClientQueryViewController: UITableViewController, Themeable {
 			case .file:
 				let itemViewController = DisplayHostViewController(for: rowItem, with: core!)
 				self.navigationController?.pushViewController(itemViewController, animated: true)
+
+//				_ = self.core?.downloadItem(rowItem, options: nil, resultHandler: {(error, _, item, _) in
+//					print("LOG ---> finish downloading")
+//					if error != nil {
+//						print("LOG ---> download preview fail")
+//					} else {
+//						self.selectedItem = item
+//						let viewController = QLPreviewController()
+//
+//						viewController.dataSource = self
+//						self.present(viewController, animated: true)
+//					}
+//				})
 		}
 	}
 
@@ -717,5 +736,18 @@ extension ClientQueryViewController: ClientItemCellDelegate {
 
 			self.present(asCard: moreViewController, animated: true)
 		}
+	}
+}
+
+extension ClientQueryViewController: QLPreviewControllerDataSource {
+	func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+
+		let localURL = core?.vault.localURL(for: selectedItem!)
+		objc_setAssociatedObject(selectedItem!, &ClientQueryViewController.kSomeKey, localURL, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+		return selectedItem!
+	}
+
+	func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+		return 1
 	}
 }
