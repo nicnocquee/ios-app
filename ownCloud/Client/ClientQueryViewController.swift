@@ -26,7 +26,6 @@ typealias ClientActionCompletionHandler = (_ actionPerformed: Bool) -> Void
 
 class ClientQueryViewController: UITableViewController, Themeable {
 
-	static var kSomeKey = "s"
 	var core : OCCore?
 	var query : OCQuery?
 
@@ -281,20 +280,9 @@ class ClientQueryViewController: UITableViewController, Themeable {
 			case .file:
 				let itemViewController = DisplayHostViewController(for: rowItem, with: core!)
 				self.navigationController?.pushViewController(itemViewController, animated: true)
-
-//				_ = self.core?.downloadItem(rowItem, options: nil, resultHandler: {(error, _, item, _) in
-//					print("LOG ---> finish downloading")
-//					if error != nil {
-//						print("LOG ---> download preview fail")
-//					} else {
-//						self.selectedItem = item
-//						let viewController = QLPreviewController()
-//
-//						viewController.dataSource = self
-//						self.present(viewController, animated: true)
-//					}
-//				})
 		}
+
+		tableView.deselectRow(at: indexPath, animated: true)
 	}
 
 	override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -719,35 +707,9 @@ extension ClientQueryViewController: ClientItemCellDelegate {
 				renameRow,
 				duplicateRow,
 				deleteRow
-//				StaticTableViewRow(label: "1"),
-//				StaticTableViewRow(label: "2"),
-//				StaticTableViewRow(label: "3"),
-//				StaticTableViewRow(label: "4"),
-//				StaticTableViewRow(label: "5"),
-//				StaticTableViewRow(label: "6"),
-//				StaticTableViewRow(label: "7"),
-//				StaticTableViewRow(label: "8"),
-//				StaticTableViewRow(label: "9"),
-//				StaticTableViewRow(label: "10"),
-//				StaticTableViewRow(label: "11"),
-//				StaticTableViewRow(label: "12"),
-//				StaticTableViewRow(label: "13")
 				]))
 
 			self.present(asCard: moreViewController, animated: true)
 		}
-	}
-}
-
-extension ClientQueryViewController: QLPreviewControllerDataSource {
-	func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-
-		let localURL = core?.vault.localURL(for: selectedItem!)
-		objc_setAssociatedObject(selectedItem!, &ClientQueryViewController.kSomeKey, localURL, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-		return selectedItem!
-	}
-
-	func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-		return 1
 	}
 }
