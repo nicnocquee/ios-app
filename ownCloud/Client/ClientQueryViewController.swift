@@ -18,8 +18,6 @@
 
 import UIKit
 import ownCloudSDK
-import QuickLook
-import ObjectiveC
 
 typealias ClientActionVieDidAppearHandler = () -> Void
 typealias ClientActionCompletionHandler = (_ actionPerformed: Bool) -> Void
