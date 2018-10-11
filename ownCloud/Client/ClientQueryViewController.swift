@@ -649,6 +649,34 @@ class ClientQueryViewController: UITableViewController, Themeable {
 
 		self.present(createFolderNavigationVC, animated: true, completion: viewDidAppearHandler)
 	}
+
+	func duplicate(_ item: OCItem, viewDidAppearHandler: ClientActionVieDidAppearHandler? = nil, completionHandler: ClientActionCompletionHandler? = nil) {
+		var name: String = "\(item.name!) copy"
+
+		if item.type != .collection {
+			let itemName = item.nameWithoutExtension()
+			var fileExtension = item.fileExtension()
+
+			if fileExtension != "" {
+				fileExtension = ".\(fileExtension)"
+			}
+
+			name = "\(itemName) copy\(fileExtension)"
+		}
+
+		if let progress = self.core?.copy(item, to: self.query?.rootItem, withName: name, options: nil, resultHandler: { (error, _, item, _) in
+			if error != nil {
+				Log.log("Error \(String(describing: error)) deleting \(String(describing: item?.path))")
+
+				completionHandler?(false)
+			} else {
+				completionHandler?(true)
+			}
+		}) {
+			self.progressSummarizer?.startTracking(progress: progress)
+		}
+
+	}
 }
 
 // MARK: - Query Delegate
@@ -776,24 +804,18 @@ extension ClientQueryViewController: ClientItemCellDelegate {
 				})
 				}, title: "Move".localized, style: .plainNonOpaque)
 
+			let duplicateRow: StaticTableViewRow = StaticTableViewRow(buttonWithAction: { [weak self] (_, _) in
+				moreViewController.dismiss(animated: true, completion: {
+					self?.duplicate(item)
+				})
+			}, title: "Duplicate".localized, style: .plainNonOpaque)
+
 			tableViewController.addSection(MoreStaticTableViewSection(headerAttributedTitle: title, identifier: "actions-section", rows: [
 				renameRow,
 				moveRow,
+				duplicateRow,
 				deleteRow
-//				StaticTableViewRow(label: "1"),
-//				StaticTableViewRow(label: "2"),
-//				StaticTableViewRow(label: "3"),
-//				StaticTableViewRow(label: "4"),
-//				StaticTableViewRow(label: "5"),
-//				StaticTableViewRow(label: "6"),
-//				StaticTableViewRow(label: "7"),
-//				StaticTableViewRow(label: "8"),
-//				StaticTableViewRow(label: "9"),
-//				StaticTableViewRow(label: "10"),
-//				StaticTableViewRow(label: "11"),
-//				StaticTableViewRow(label: "12"),
-//				StaticTableViewRow(label: "13")
-				]))
+			]))
 
 			self.present(asCard: moreViewController, animated: true)
 		}
